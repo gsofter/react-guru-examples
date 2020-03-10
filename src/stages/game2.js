@@ -1,7 +1,7 @@
 import React from "react";
-import Board from "./board";
+import Board from "../components/board";
 
-export default class Game extends React.Component {
+export default class Game2 extends React.Component {
 
     // eslint-disable-next-line no-useless-constructor
     constructor(props) {
@@ -9,7 +9,7 @@ export default class Game extends React.Component {
 
         this.state = {
             history: [{
-                squares: Array(9).fill(null)
+                squares: Array(25).fill(null)
             }], 
             currentStep: 0,
             isXNext: true,
@@ -78,19 +78,44 @@ export default class Game extends React.Component {
 
 function calculateWinner(squares) {
     const lines = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-        [0, 4, 8],
-        [2, 4, 6],
+        [0, 1, 2, 3],
+        [5, 6, 7, 8],
+        [10, 11, 12, 13],
+        [15, 16, 17, 18],
+        [20, 21, 22, 23],
+
+        [2, 3, 4, 5],
+        [6, 7, 8, 9],
+        [11, 12, 13, 14],
+        [16, 17, 18, 19],
+        [21, 22, 23, 24],
+
+        [3, 7, 11, 15],
+        [4, 8, 12, 16],
+        [8, 12, 16, 20],
+        [9, 13, 17, 21],
+
+        [0, 6, 12, 18],
+        [1, 7, 13, 19],
+        [6, 12, 18, 24],
+        [5, 11, 17, 23],
+
+        [0, 5, 10, 15],
+        [1, 6, 11, 16],
+        [2, 7, 12, 17],
+        [3, 8, 13, 18],
+        [4, 9, 14, 18],
+
+        [5, 10, 15, 20],
+        [6, 11, 16, 21],
+        [7, 12, 17, 22],
+        [8, 13, 18, 23],
+        [9, 14, 18, 24],
     ];
     for (let i = 0; i < lines.length; i++) {
-        const [a, b, c] = lines[i];
-        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
+        const [a, b, c, d] = lines[i];
+        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c] && squares[a] === squares[d]) {
+            return squares[a];
         }
     }
     return null;

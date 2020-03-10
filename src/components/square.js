@@ -1,11 +1,15 @@
 import React from 'react';
-
-export default function Square(props) {
+import { Button } from "@material-ui/core";
+function Square(props) {
     return (
-        <button 
-            className = "square" 
+        <Button 
+            variant="contained"
+            color="primary"
+            className = {`square ${props.value !== null ? "square-" + props.value : ' '}`} 
             onClick={ () => props.handleClick() }>
             { props.value }
-        </button>
+        </Button>
     );
 }
+
+export default Square;
