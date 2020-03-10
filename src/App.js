@@ -1,14 +1,16 @@
 import React from 'react';
-import logo from './logo.svg';
-import './components/board'
-import Board from './components/board';
+import Game from './components/game';
 import './App.css';
 import './style.css';
+
 function App() {
   return (
-    <div className="container">
-      <Board/>
-    </div>
+    <React.Fragment>
+      <h1> Tic-Tok by Guru </h1>
+      <div className="container">
+        <Game />
+      </div>
+    </React.Fragment>
   );
 }
 
