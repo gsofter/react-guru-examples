@@ -51,7 +51,7 @@ export default class Game1 extends React.Component {
         const move = history.map( (step, move) => { 
             // const desc = move ? "Go to Move #" + move : "Go to start";
             return (
-                <button onClick={() => this.jump(move)}> History # { move } </button>
+                <button key = {move} onClick={() => this.jump(move)}> History # { move } </button>
             );
         })
 

@@ -1,14 +1,5 @@
 import React from 'react'
 import './style.css'
-const styles = {
-  success: {
-    backgroundColor: 'lightgreen',
-  },
-  failure: {
-    backgroundColor: 'lightcoral',
-  },
-}
-
 class ValidationExample extends React.Component {
   state = {
     password: '',
