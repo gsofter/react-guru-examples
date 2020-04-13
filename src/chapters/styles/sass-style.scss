@@ -1,18 +1,12 @@
-$red : #fa525252;
-$orange: #fd7e14;
-$yellow: #fcc419;
-$green : #40c057;
-
-@mixin square($size) {
-    $calcuated: 32px * $size;
-    width: $calcuated;
-    height: $calcuated;
-}
-
+@import 'utils.scss';
 .SassComponent {
     display: flex;
+    background: $oc-gray-2;
+    @include media('<768px') {
+        background: $oc-gray-9;
+    }
     .box {
-        background: red;
+        
         cursor: pointer;
         transition: all 0.3s ease-in;
 

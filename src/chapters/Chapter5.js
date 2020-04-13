@@ -1,5 +1,5 @@
 import React from 'react'
-import './style.css'
+import './styles/style.css'
 class ValidationExample extends React.Component {
   state = {
     password: '',

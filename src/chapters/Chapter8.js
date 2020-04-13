@@ -1,6 +1,4 @@
 import React from 'react'
-import { Switch } from '@material-ui/core'
-import { act } from 'react-dom/test-utils'
 
 // custom compoent
 const Info = () => {
