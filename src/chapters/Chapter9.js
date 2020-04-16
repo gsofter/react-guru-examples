@@ -35,16 +35,17 @@ const CSSModule = () => {
 }
 
 const sizes = {
-    desktop: 1024,
-    tablet: 768
+  desktop: 1024,
+  tablet: 768,
 }
 
 const media = Object.keys(sizes).reduce((acc, label) => {
-    acc[label] = (...args) => css`
-        @media(max-width: ${sizes[label] / 16}em) {
-            ${css(...args)}
-        }`;
-    return acc;
+  acc[label] = (...args) => css`
+    @media (max-width: ${sizes[label] / 16}em) {
+      ${css(...args)}
+    }
+  `
+  return acc
 }, {})
 
 const Box = styled.div`
@@ -56,7 +57,7 @@ const Box = styled.div`
   ${media.desktop`width: 768px;`}
   ${media.tablet`width: 100%;`}
   @media (max-width: 768px) {
-      width: 100%;
+    width: 100%;
   }
 `
 
@@ -97,10 +98,10 @@ const Title = styled.h1`
   font-size: 1.5em;
   text-align: center;
   color: palevioletred;
-`;
+`
 
-const func = props => {
-    console.log(props)
+const func = (props) => {
+  console.log(props)
 }
 
 const StyledComponent = () => {

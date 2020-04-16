@@ -32,6 +32,7 @@ import Chapter6 from './chapters/Chapter6'
 import Chapter7 from './chapters/Chapter7'
 import Chapter8 from './chapters/Chapter8'
 import Chapter9 from './chapters/Chapter9'
+import Chapter10 from './chapters/Chapter10'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Link as RouterLink } from 'react-router-dom'
 import './style.css'
@@ -272,7 +273,18 @@ export default function App(props) {
                   <ListItemIcon>
                     <StarBorder />
                   </ListItemIcon>
-                  <ListItemText primary="Chapter9" />
+                  <ListItemText primary="Chapter10" />
+                </ListItem>
+                <ListItem
+                  button
+                  className={classes.nested}
+                  component={RouterLink}
+                  to="/chapters/chapter10"
+                >
+                  <ListItemIcon>
+                    <StarBorder />
+                  </ListItemIcon>
+                  <ListItemText primary="Chapter10" />
                 </ListItem>
               </List>
             </Collapse>
@@ -311,6 +323,9 @@ export default function App(props) {
             </Route>
             <Route exact path="/chapters/chapter9">
               <Chapter9 />
+            </Route>
+            <Route exact path="/chapters/chapter10">
+              <Chapter10 />
             </Route>
           </Switch>
         </main>
