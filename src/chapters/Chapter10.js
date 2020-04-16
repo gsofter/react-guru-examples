@@ -24,7 +24,6 @@ const TodoInsert = ({ onInsert }) => {
 
   const onSubmit = useCallback(
     (e) => {
-    console.log('asdf')
       onInsert(text)
       setText('')
       e.preventDefault()
@@ -45,31 +44,37 @@ const TodoInsert = ({ onInsert }) => {
   )
 }
 
-const TodoListItem = ({ todo, onRemove }) => {
+const TodoListItem = ({ todo, onRemove, onToggle }) => {
   const { text, checked } = todo
-  const onClickRemove = useCallback(
-      e => {
-          onRemove()
-      }
-  )
+
   return (
     <div className="TodoListItem">
-      <div className={`checkbox ${checked ? 'checked' : ''}`}>
+      <div
+        className={`checkbox ${checked ? 'checked' : ''}`}
+        onClick={onToggle}
+      >
         {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
         <div className="text">{text}</div>
       </div>
-      <div className="remove" onClick={onClickRemove}>
+      <div className="remove" onClick={onRemove}>
         <MdRemoveCircleOutline />
       </div>
     </div>
   )
 }
 
-const TodoList = ({ todos, onRemove}) => {
+const TodoList = ({ todos, onRemove, onToggle }) => {
   return (
     <div className="TodoList">
       {todos.map((todo) => {
-        return <TodoListItem todo={todo} key={todo.id} onRemove={() => onRemove(todo.id)} />
+        return (
+          <TodoListItem
+            todo={todo}
+            key={todo.id}
+            onRemove={() => onRemove(todo.id)}
+            onToggle={() => onToggle(todo.id)}
+          />
+        )
       })}
     </div>
   )
@@ -116,12 +121,22 @@ const Chapter10 = (props) => {
     [todos],
   )
 
+  const onToggle = useCallback(
+    (id) => {
+      setTodos(
+        todos.map((todo) =>
+          todo.id === id ? { ...todo, checked: !todo.checked } : todo,
+        ),
+      )
+    },
+    [todos],
+  )
   return (
     <div>
       <h1> Chapter10 </h1>
       <TodoTemplate>
         <TodoInsert onInsert={onInsert} />
-        <TodoList todos={todos} onRemove={onRemove}/>
+        <TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
       </TodoTemplate>
     </div>
   )
