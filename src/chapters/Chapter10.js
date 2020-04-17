@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react'
+import React, { useState, useRef, useCallback, useReducer } from 'react'
 import './styles/chapter10/TodoTemplate.scss'
 import { MdAdd } from 'react-icons/md'
 import {
@@ -7,6 +7,7 @@ import {
   MdRemoveCircleOutline,
 } from 'react-icons/md'
 
+import { List } from 'react-virtualized'
 const TodoTemplate = ({ children }) => {
   return (
     <div className="TodoTemplate">
@@ -44,93 +45,120 @@ const TodoInsert = ({ onInsert }) => {
   )
 }
 
-const TodoListItem = ({ todo, onRemove, onToggle }) => {
-  const { text, checked } = todo
-
+const TodoListItem = React.memo(({ todo, onRemove, onToggle, style }) => {
+  const { id, text, checked } = todo
   return (
-    <div className="TodoListItem">
-      <div
-        className={`checkbox ${checked ? 'checked' : ''}`}
-        onClick={onToggle}
-      >
-        {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
-        <div className="text">{text}</div>
-      </div>
-      <div className="remove" onClick={onRemove}>
-        <MdRemoveCircleOutline />
+    <div className="TodoListItem-virtualized" style={style}>
+      <div className="TodoListItem">
+        <div
+          className={`checkbox ${checked ? 'checked' : ''}`}
+          onClick={(e) => onToggle(id)}
+        >
+          {checked ? <MdCheckBox /> : <MdCheckBoxOutlineBlank />}
+          <div className="text">{text}</div>
+        </div>
+        <div className="remove" onClick={(e) => onRemove(id)}>
+          <MdRemoveCircleOutline />
+        </div>
       </div>
     </div>
   )
-}
+})
 
 const TodoList = ({ todos, onRemove, onToggle }) => {
+  const rowRenderer = useCallback(
+    ({ index, key, style }) => {
+      const todo = todos[index]
+      return (
+        <TodoListItem
+          todo={todo}
+          key={key}
+          onRemove={onRemove}
+          onToggle={onToggle}
+          style={style}
+        />
+      )
+    },
+    [onRemove, onToggle, todos],
+  )
+
   return (
     <div className="TodoList">
-      {todos.map((todo) => {
-        return (
-          <TodoListItem
-            todo={todo}
-            key={todo.id}
-            onRemove={() => onRemove(todo.id)}
-            onToggle={() => onToggle(todo.id)}
-          />
-        )
-      })}
+      <List
+        className="TodoList"
+        width={512} // total width
+        height={513} // total height
+        rowCount={todos.length} // total items length
+        rowHeight={57} // item height
+        rowRenderer={rowRenderer} // item renderer
+        list={todos} // array
+        style={{ outline: 'none' }} // outline style
+      />
     </div>
   )
 }
 
-const Chapter10 = (props) => {
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      text: 'Understanding basic concept of React',
-      checked: true,
-    },
-    {
-      id: 2,
-      text: 'Component  Styling',
-      checked: true,
-    },
-    {
-      id: 3,
-      text: 'Todoapp make',
+function createBulkTodos(init) {
+  const array = []
+  for (let i = 1; i <= 2500; i++) {
+    array.push({
+      id: i,
+      text: `Task ${i}`,
       checked: false,
-    },
-  ])
+    })
+  }
+  return array
+}
 
-  const nextId = useRef(4)
-
-  const onInsert = useCallback(
-    (text) => {
-      const todo = {
-        id: nextId.current,
-        text,
-        chceked: false,
-      }
-      setTodos(todos.concat(todo))
-      nextId.current += 1
-    },
-    [todos],
-  )
-
-  const onRemove = useCallback(
-    (id) => {
-      setTodos(todos.filter((todo) => todo.id !== id))
-    },
-    [todos],
-  )
-
-  const onToggle = useCallback(
-    (id) => {
-      setTodos(
-        todos.map((todo) =>
-          todo.id === id ? { ...todo, checked: !todo.checked } : todo,
-        ),
+function todoReducer(todos, action) {
+  switch (action.type) {
+    case 'INSERT':
+      return todos.concat(action.todo)
+    case 'REMOVE':
+      return todos.filter((todo) => todo.id !== action.id)
+    case 'TOGGLE':
+      console.log('TOGGLE')
+      return todos.map((todo) =>
+        todo.id === action.id ? { ...todo, checked: !todo.checked } : todo,
       )
-    },
-    [todos],
+    default:
+      return todos
+  }
+}
+const Chapter10 = (props) => {
+  const [todos, dispatchTodos] = useReducer(
+    todoReducer,
+    undefined,
+    createBulkTodos,
   )
+  // const [todos, setTodos] = useState(createBulkTodos)
+
+  const nextId = useRef(2501)
+
+  const onInsert = useCallback((text) => {
+    const todo = {
+      id: nextId.current,
+      text,
+      chceked: false,
+    }
+    // setTodos(todos => todos.concat(todo))
+    dispatchTodos({ type: 'INSERT', todo: todo })
+    nextId.current += 1
+  }, [])
+
+  const onRemove = useCallback((id) => {
+    // setTodos(todos => todos.filter((todo) => todo.id !== id))
+    dispatchTodos({ type: 'REMOVE', id: id })
+  }, [])
+
+  const onToggle = useCallback((id) => {
+    // setTodos(todos =>
+    //   todos.map((todo) =>
+    //     todo.id === id ? { ...todo, checked: !todo.checked } : todo,
+    //   ),
+    // )
+    dispatchTodos({ type: 'TOGGLE', id: id })
+  }, [])
   return (
     <div>
       <h1> Chapter10 </h1>
