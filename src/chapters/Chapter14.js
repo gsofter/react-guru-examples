@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import styled, { css } from 'styled-components'
+import { NavLink, BrowserRouter, Route } from 'react-router-dom'
+import usePromise from '../lib/usePromise'
 const API_KEY = '5ed644a60cfc45bcaedc0fe478c008fd'
 
 const NewsItemBlock = styled.div`
@@ -79,35 +81,28 @@ const sampleArticle = {
   urlToImage: 'https://via.placeholder.com/160',
 }
 
-const NewsList = ({category}) => {
-  const [articles, setArticles] = useState(null)
-  const [loading, setLoading] = useState(false)
+const NewsList = ({ category }) => {
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
-      try {
-        const query = category === 'all' ? '' : `&category=${category}`
-        const response = await axios.get(
-          `http://newsapi.org/v2/top-headlines?country=us${query}&apiKey=${API_KEY}`,
-        )
-        setArticles(response.data.articles)
-      } catch (e) {
-        console.log(e)
-      }
-      setLoading(false)
-    }
-    fetchData()
-  }, [category])
+  const [loading, response, error] = usePromise(() => {
+    const query = category === 'all' ? '' : `&category=${category}`;
+    return axios.get(
+      `https://newsapi.org/v2/top-headlines?country=us${query}&apiKey=0a8c4202385d4ec1bb93b7e277b3c51f`,
+    );
+  }, [category]);
 
   if (loading) {
     return <NewsListBlock> Loading .... </NewsListBlock>
   }
 
-  if (!articles) {
-    return null
+  if (!response) {
+    return null;
   }
 
+  if (error) {
+    return <NewsListBlock> Error!</NewsListBlock>;
+  }
+
+  const { articles } = response.data;
   return (
     <NewsListBlock>
       {articles.map((article) => (
@@ -159,7 +154,7 @@ const CategoriesBlock = styled.div`
   }
 `
 
-const Category = styled.div`
+const Category = styled(NavLink)`
   font-size: 1.125rem;
   cursor: pointer;
   white-space: pre;
@@ -175,39 +170,50 @@ const Category = styled.div`
     margin-left: 1rem;
   }
 
-  ${props => 
-    props.active && css`
+  ${(props) =>
+    props.active &&
+    css`
       font-weight: 600;
       border-bottom: 2px solid #22b8cf;
       color: #22b8cf;
       &:hover {
         color: #3bc9db;
       }
-    `
-  }
+    `}
 `
 
-const Categories = ({category, onCategorySelect}) => {
+const Categories = ({ category, onCategorySelect }) => {
+  const prevPath = 'chapters/chapter14'
   return (
+    
     <CategoriesBlock>
       {categories.map((c) => (
-        <Category key={c.name} onClick={() => onCategorySelect(c.name)} active={c.name === category}> {c.text} </Category>
+        <Category
+          key={c.name}
+          activeClassName="active"
+          exact={c.name === 'all'}
+          to={c.name === 'all' ? `/${prevPath}` : `/${prevPath}/${c.name}`}
+        >
+          {c.text}
+        </Category>
       ))}
     </CategoriesBlock>
   )
 }
 
-const Chapter14 = () => {
-    const [category, setCategory] = useState('all')
-    const onCategorySelect = useCallback(category => {
-        console.log('category', category)
-        setCategory(category)
-    }, [])
+const NewsPage = ({match}) => {
+  const category = match.params.category || 'all'
+  console.log('NewsPage =>', category)
   return (
-    <div>
-      <Categories onCategorySelect={onCategorySelect} category={category}/>
-      <NewsList category={category}/>
-    </div>
+    <React.Fragment>
+      <Categories />
+      <NewsList category={category} />
+    </React.Fragment>
+  )
+}
+const Chapter14 = () => {
+  return (
+    <Route path="/chapters/chapter14/:category?" component={NewsPage} />
   )
 }
 
