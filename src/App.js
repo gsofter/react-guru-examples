@@ -33,6 +33,8 @@ import Chapter7 from './chapters/Chapter7'
 import Chapter8 from './chapters/Chapter8'
 import Chapter9 from './chapters/Chapter9'
 import Chapter10 from './chapters/Chapter10'
+import Chapter12 from './chapters/Chapter12'
+import Chapter14 from './chapters/Chapter14'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Link as RouterLink } from 'react-router-dom'
 import './style.css'
@@ -273,7 +275,7 @@ export default function App(props) {
                   <ListItemIcon>
                     <StarBorder />
                   </ListItemIcon>
-                  <ListItemText primary="Chapter10" />
+                  <ListItemText primary="Chapter9" />
                 </ListItem>
                 <ListItem
                   button
@@ -285,6 +287,29 @@ export default function App(props) {
                     <StarBorder />
                   </ListItemIcon>
                   <ListItemText primary="Chapter10" />
+                </ListItem>
+                <ListItem
+                  button
+                  className={classes.nested}
+                  component={RouterLink}
+                  to="/chapters/chapter12"
+                >
+                  <ListItemIcon>
+                    <StarBorder />
+                  </ListItemIcon>
+                  <ListItemText primary="Chapter12" />
+                </ListItem>
+
+                <ListItem
+                  button
+                  className={classes.nested}
+                  component={RouterLink}
+                  to="/chapters/chapter14"
+                >
+                  <ListItemIcon>
+                    <StarBorder />
+                  </ListItemIcon>
+                  <ListItemText primary="Chapter14" />
                 </ListItem>
               </List>
             </Collapse>
@@ -326,6 +351,12 @@ export default function App(props) {
             </Route>
             <Route exact path="/chapters/chapter10">
               <Chapter10 />
+            </Route>
+            <Route exact path="/chapters/chapter12">
+              <Chapter12 />
+            </Route>
+            <Route exact path="/chapters/chapter14">
+              <Chapter14 />
             </Route>
           </Switch>
         </main>
