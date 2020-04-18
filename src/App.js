@@ -35,6 +35,7 @@ import Chapter9 from './chapters/Chapter9'
 import Chapter10 from './chapters/Chapter10'
 import Chapter12 from './chapters/Chapter12'
 import Chapter14 from './chapters/Chapter14'
+import Chapter15 from './chapters/Chapter15'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Link as RouterLink } from 'react-router-dom'
 import './style.css'
@@ -311,6 +312,18 @@ export default function App(props) {
                   </ListItemIcon>
                   <ListItemText primary="Chapter14" />
                 </ListItem>
+
+                <ListItem
+                  button
+                  className={classes.nested}
+                  component={RouterLink}
+                  to="/chapters/chapter15"
+                >
+                  <ListItemIcon>
+                    <StarBorder />
+                  </ListItemIcon>
+                  <ListItemText primary="Chapter15" />
+                </ListItem>
               </List>
             </Collapse>
           </List>
@@ -328,22 +341,22 @@ export default function App(props) {
             <Route path="/game2">
               <Game2 />
             </Route>
-            <Route  path="/chapters/chapter3">
+            <Route path="/chapters/chapter3">
               <Chapter3 />
             </Route>
-            <Route  path="/chapters/chapter4">
+            <Route path="/chapters/chapter4">
               <Chapter4 />
             </Route>
-            <Route  path="/chapters/chapter5">
+            <Route path="/chapters/chapter5">
               <Chapter5 />
             </Route>
-            <Route  path="/chapters/chapter6">
+            <Route path="/chapters/chapter6">
               <Chapter6 />
             </Route>
-            <Route  path="/chapters/chapter7">
+            <Route path="/chapters/chapter7">
               <Chapter7 />
             </Route>
-            <Route  path="/chapters/chapter8">
+            <Route path="/chapters/chapter8">
               <Chapter8 />
             </Route>
             <Route path="/chapters/chapter9">
@@ -357,6 +370,9 @@ export default function App(props) {
             </Route>
             <Route path="/chapters/chapter14">
               <Chapter14 />
+            </Route>
+            <Route path="/chapters/chapter15">
+              <Chapter15 />
             </Route>
           </Switch>
         </main>

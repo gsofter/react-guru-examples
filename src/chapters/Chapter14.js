@@ -82,27 +82,26 @@ const sampleArticle = {
 }
 
 const NewsList = ({ category }) => {
-
   const [loading, response, error] = usePromise(() => {
-    const query = category === 'all' ? '' : `&category=${category}`;
+    const query = category === 'all' ? '' : `&category=${category}`
     return axios.get(
       `https://newsapi.org/v2/top-headlines?country=us${query}&apiKey=0a8c4202385d4ec1bb93b7e277b3c51f`,
-    );
-  }, [category]);
+    )
+  }, [category])
 
   if (loading) {
     return <NewsListBlock> Loading .... </NewsListBlock>
   }
 
   if (!response) {
-    return null;
+    return null
   }
 
   if (error) {
-    return <NewsListBlock> Error!</NewsListBlock>;
+    return <NewsListBlock> Error!</NewsListBlock>
   }
 
-  const { articles } = response.data;
+  const { articles } = response.data
   return (
     <NewsListBlock>
       {articles.map((article) => (
@@ -170,20 +169,19 @@ const Category = styled(NavLink)`
     margin-left: 1rem;
   }
 
-  &.active{
-      font-weight: 600;
-      border-bottom: 2px solid #22b8cf;
-      color: #22b8cf;
-      &:hover {
-        color: #3bc9db;
-      }
-    }  
+  &.active {
+    font-weight: 600;
+    border-bottom: 2px solid #22b8cf;
+    color: #22b8cf;
+    &:hover {
+      color: #3bc9db;
+    }
+  }
 `
 
 const Categories = ({ category, onCategorySelect }) => {
   const prevPath = 'chapters/chapter14'
   return (
-    
     <CategoriesBlock>
       {categories.map((c) => (
         <Category
@@ -199,7 +197,7 @@ const Categories = ({ category, onCategorySelect }) => {
   )
 }
 
-const NewsPage = ({match}) => {
+const NewsPage = ({ match }) => {
   const category = match.params.category || 'all'
   console.log('NewsPage =>', category)
   return (
@@ -210,9 +208,7 @@ const NewsPage = ({match}) => {
   )
 }
 const Chapter14 = () => {
-  return (
-    <Route path="/chapters/chapter14/:category?" component={NewsPage} />
-  )
+  return <Route path="/chapters/chapter14/:category?" component={NewsPage} />
 }
 
 export default Chapter14
