@@ -23,6 +23,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import StarBorder from '@material-ui/icons/StarBorder'
 import Collapse from '@material-ui/core/Collapse'
+import PlayCircleOutlineIcon from '@material-ui/icons/PlayCircleOutline'
 import Game1 from './stages/game1'
 import Game2 from './stages/game2'
 import Chapter3 from './chapters/Chapter3'
@@ -36,9 +37,11 @@ import Chapter10 from './chapters/Chapter10'
 import Chapter12 from './chapters/Chapter12'
 import Chapter14 from './chapters/Chapter14'
 import Chapter15 from './chapters/Chapter15'
+import Chapter17 from './chapters/Chapter17'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { Link as RouterLink } from 'react-router-dom'
 import './style.css'
+import YoutubeView from './components/YoutubeView'
 const drawerWidth = 240
 
 const useStyles = makeStyles((theme) => ({
@@ -324,8 +327,26 @@ export default function App(props) {
                   </ListItemIcon>
                   <ListItemText primary="Chapter15" />
                 </ListItem>
+
+                <ListItem
+                  button
+                  className={classes.nested}
+                  component={RouterLink}
+                  to="/chapters/chapter17"
+                >
+                  <ListItemIcon>
+                    <StarBorder />
+                  </ListItemIcon>
+                  <ListItemText primary="Chapter17" />
+                </ListItem>
               </List>
             </Collapse>
+            <ListItem button component={RouterLink} to="/youtube-player">
+              <ListItemIcon>
+                <PlayCircleOutlineIcon />
+              </ListItemIcon>
+              <ListItemText primary="Youtube Player" />
+            </ListItem>
           </List>
         </Drawer>
         <main className={classes.content}>
@@ -373,6 +394,12 @@ export default function App(props) {
             </Route>
             <Route path="/chapters/chapter15">
               <Chapter15 />
+            </Route>
+            <Route path="/chapters/chapter17">
+              <Chapter17 />
+            </Route>
+            <Route path="/youtube-player">
+              <YoutubeView />
             </Route>
           </Switch>
         </main>
